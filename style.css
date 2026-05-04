@@ -215,19 +215,30 @@ body {
   gap: 6px;
 }
 .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--papyrus);
   color: var(--ink);
   border: 1px solid var(--ink-faint);
   border-radius: 2px;
-  padding: 6px 10px;
+  padding: 6px 10px 6px 8px;
   font-size: 0.85rem;
   font-family: var(--sans);
   cursor: pointer;
   letter-spacing: 0.05em;
-  transition: background 0.12s, color 0.12s;
+  transition: background var(--motion-fast), color var(--motion-fast), transform var(--motion-fast);
+}
+.chip-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--ink-soft);
+  flex-shrink: 0;
 }
 .chip:hover { background: var(--papyrus-deep); }
-.chip:active { background: var(--ink); color: var(--papyrus); transform: scale(0.97); }
+.chip:hover .chip-icon { color: var(--ink); }
+.chip:active { background: var(--ink); color: var(--papyrus); }
+.chip:active .chip-icon { color: var(--papyrus); }
 
 /* 区切り：碑文の境界帯 ─◆─ */
 .divider {

@@ -624,8 +624,10 @@ document.getElementById("keyword-form").addEventListener("submit", e => {
 });
 document.querySelectorAll(".chip[data-kw]").forEach(chip => {
   chip.addEventListener("click", () => {
-    document.getElementById("keyword-input").value = chip.dataset.kw;
-    generateFromKeyword(chip.dataset.kw);
+    const kw = chip.dataset.kw;
+    if (window.GlyphFx) GlyphFx.chipBounce(chip);
+    document.getElementById("keyword-input").value = kw;
+    generateFromKeyword(kw);
   });
 });
 
