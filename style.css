@@ -43,6 +43,13 @@
   --mincho:   "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Hiragino Mincho Pro", "MS Mincho", serif;
   --sans:     "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", "Helvetica Neue", system-ui, sans-serif;
   --mono:     "Cinzel", ui-monospace, "SF Mono", "Menlo", monospace;
+
+  /* モーション */
+  --motion-fast: 120ms;
+  --motion-mid:  220ms;
+  --motion-slow: 420ms;
+  --ease:        cubic-bezier(.2,.6,.2,1);
+  --ornament:    var(--ink-soft);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -915,4 +922,16 @@ input[type="checkbox"]:checked::before { transform: translateX(20px); background
   .hero { padding: 4vh 24px 10px; }
   .hero h1 { font-size: 1.8rem; }
   .preview-wrap { max-height: 40vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 1ms;
+    --motion-mid:  1ms;
+    --motion-slow: 1ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
 }
