@@ -1,0 +1,25 @@
+{
+  "name": "picross",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --test tests/core.test.js tests/icon-pipeline.test.js tests/ui.test.js",
+    "test:core": "node --test tests/core.test.js",
+    "test:icons": "node --test tests/icon-pipeline.test.js",
+    "test:icons:debug": "PICROSS_DEBUG=1 node --test tests/icon-pipeline.test.js",
+    "test:ui": "node --test tests/ui.test.js",
+    "test:ui:shots": "PICROSS_UI_SHOTS=1 node --test tests/ui.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer": "^24.42.0",
+    "sharp": "^0.34.5"
+  }
+}

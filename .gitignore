@@ -1,0 +1,6 @@
+node_modules/
+tests/debug-out/
+tests/ui-shots/
+.DS_Store
+.claude/
+.codex

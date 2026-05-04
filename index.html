@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ebdfc4">
+<title>グリフ</title>
+<link rel="stylesheet" href="style.css?v=21">
+</head>
+<body>
+<div id="app">
+
+  <!-- ホーム -->
+  <section id="screen-home" class="screen active">
+    <header class="hero">
+      <h1>GLYPH<span class="ja">グリフ</span></h1>
+      <p class="subtitle">言葉や写真から、刻む一枚を。</p>
+    </header>
+    <div class="home-actions">
+      <div class="keyword-card">
+        <div class="keyword-label">言葉から</div>
+        <form class="keyword-input" id="keyword-form">
+          <input type="text" id="keyword-input" placeholder="猫、桜、星、城…" autocomplete="off" enterkeyhint="go">
+          <button type="submit" class="btn btn-primary" id="btn-keyword">刻む</button>
+        </form>
+        <div class="keyword-chips">
+          <button class="chip" data-kw="猫">🐱 猫</button>
+          <button class="chip" data-kw="犬">🐶 犬</button>
+          <button class="chip" data-kw="桜">🌸 桜</button>
+          <button class="chip" data-kw="星">⭐ 星</button>
+          <button class="chip" data-kw="ハート">💗 ハート</button>
+          <button class="chip" data-kw="車">🚗 車</button>
+          <button class="chip" data-kw="りんご">🍎 りんご</button>
+          <button class="chip" data-kw="家">🏠 家</button>
+          <button class="chip" data-kw="魚">🐟 魚</button>
+          <button class="chip" data-kw="花">🌼 花</button>
+        </div>
+      </div>
+      <div class="divider"><span>または</span></div>
+      <label class="btn btn-primary btn-large">
+        <input type="file" id="file-input" accept="image/*" hidden>
+        <span>写真を選ぶ</span>
+      </label>
+      <label class="btn btn-secondary btn-large">
+        <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
+        <span>カメラで撮る</span>
+      </label>
+      <button class="btn btn-ghost" id="btn-sample">サンプルで試す</button>
+    </div>
+    <footer class="home-footer">
+      タップで塗る ／ 長押しで×印
+    </footer>
+  </section>
+
+  <!-- 編集 -->
+  <section id="screen-edit" class="screen">
+    <header class="topbar">
+      <button class="icon-btn" data-back="home">←</button>
+      <h2>下絵</h2>
+      <span></span>
+    </header>
+    <div class="edit-body">
+      <div class="preview-wrap">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <div class="controls">
+        <div class="control-row">
+          <label>細かさ</label>
+          <div class="pill-buttons" id="size-buttons">
+            <button data-size="15">ふつう</button>
+            <button data-size="20">細かい</button>
+            <button data-size="25">精細</button>
+            <button data-size="30" class="active">おすすめ</button>
+          </div>
+        </div>
+        <div class="control-row advanced-control">
+          <label>スタイル</label>
+          <div class="pill-buttons" id="mode-buttons">
+            <button data-mode="standard">標準</button>
+            <button data-mode="adaptive" class="active">適応</button>
+            <button data-mode="edge">線画</button>
+          </div>
+        </div>
+        <div class="control-row advanced-control">
+          <label>シャープ <span id="sharpness-value">50</span></label>
+          <input type="range" id="sharpness" min="0" max="100" value="50">
+        </div>
+        <div class="control-row advanced-control">
+          <label>明るさ <span id="brightness-value">0</span></label>
+          <input type="range" id="brightness" min="-100" max="100" value="0">
+        </div>
+        <div class="control-row advanced-control">
+          <label>コントラスト <span id="contrast-value">0</span></label>
+          <input type="range" id="contrast" min="-100" max="100" value="0">
+        </div>
+        <div class="control-row advanced-control">
+          <label>しきい値 <span id="threshold-value">自動</span></label>
+          <input type="range" id="threshold" min="0" max="255" value="128">
+          <button class="btn btn-ghost btn-tiny" id="btn-auto-threshold">自動</button>
+        </div>
+        <div class="control-row advanced-control">
+          <label>クロップ <span id="zoom-value">×1.0</span></label>
+          <input type="range" id="zoom" min="100" max="300" value="100">
+          <small style="color:var(--text-dim);font-size:0.75rem">プレビューをタップして中心を移動</small>
+        </div>
+        <div class="control-row toggle-row advanced-control">
+          <label>ノイズ除去</label>
+          <input type="checkbox" id="cleanup" checked>
+        </div>
+        <div class="control-row toggle-row advanced-control">
+          <label>反転</label>
+          <input type="checkbox" id="invert">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-large btn-fixed" id="btn-create-puzzle">パズルを作る</button>
+    </div>
+  </section>
+
+  <!-- プレイ -->
+  <section id="screen-play" class="screen">
+    <header class="topbar">
+      <button class="icon-btn" data-back="edit">←</button>
+      <h2 id="play-title">プレイ</h2>
+      <button class="icon-btn" id="btn-help">?</button>
+    </header>
+    <div class="play-body">
+      <div class="play-toolbar">
+        <div class="mode-switch">
+          <button class="mode-btn active" data-mode="fill">塗</button>
+          <button class="mode-btn" data-mode="cross">印</button>
+          <button class="mode-btn" data-mode="erase">消</button>
+        </div>
+        <div class="play-actions">
+          <button class="icon-btn" id="btn-zoom-out" title="縮小">−</button>
+          <button class="icon-btn" id="btn-zoom-in" title="拡大">+</button>
+          <button class="icon-btn" id="btn-undo" title="戻る">↶</button>
+          <button class="icon-btn" id="btn-restart" title="やり直す">⟳</button>
+        </div>
+      </div>
+      <div class="board-wrap">
+        <div id="board"></div>
+      </div>
+      <div class="status-bar">
+        <span id="timer">00:00</span>
+        <span id="mistakes">ミス: 0</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- クリア -->
+  <section id="screen-clear" class="screen">
+    <div class="clear-body">
+      <h2>COMPLETE<span class="ja">完成</span></h2>
+      <div class="clear-stats">
+        <div><span class="stat-label">時間</span><span id="clear-time">--:--</span></div>
+        <div><span class="stat-label">誤</span><span id="clear-mistakes">0</span></div>
+        <div><span class="stat-label">寸法</span><span id="clear-size">--</span></div>
+      </div>
+      <div class="clear-art-wrap">
+        <canvas id="clear-canvas"></canvas>
+      </div>
+      <div class="clear-actions">
+        <button class="btn btn-secondary" id="btn-replay">もう一度</button>
+        <button class="btn btn-primary" id="btn-new">別の絵で</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ヘルプ -->
+  <div id="help-modal" class="modal">
+    <div class="modal-card">
+      <h3>遊び方</h3>
+      <ul>
+        <li><b>数字</b>は連続して塗るマスの数を表します</li>
+        <li>同じ列・行で複数の数字は<b>1マス以上の空き</b>で区切られます</li>
+        <li>「塗る」モードでマスをタップして塗りつぶし</li>
+        <li>「印」モードで✕（塗らないマス）を付けられます</li>
+        <li>すべての数字に合うように塗ればクリア！</li>
+      </ul>
+      <button class="btn btn-primary" id="btn-help-close">閉じる</button>
+    </div>
+  </div>
+
+  <!-- ロード中 -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div id="loading-text">読み込み中</div>
+  </div>
+
+  <!-- トースト -->
+  <div id="toast"></div>
+
+</div>
+<script src="picross-core.js?v=21"></script>
+<script src="picross-dict.js?v=21"></script>
+<script src="app.js?v=21"></script>
+</body>
+</html>
