@@ -838,27 +838,60 @@ input[type="checkbox"]:checked::before { transform: translateX(20px); background
 }
 
 .clear-art-wrap {
-  background: var(--cell-bg);
-  border: 1px solid var(--ink-soft);
-  box-shadow: inset 0 0 0 4px var(--cell-bg), inset 0 0 0 5px var(--ink-faint);
-  padding: 10px;
   width: 80vw;
   max-width: 320px;
-  aspect-ratio: 1 / 1;
 }
+.clear-art-frame {
+  background: var(--cell-bg);
+  border: 1px solid var(--ink-soft);
+  box-shadow:
+    inset 0 0 0 4px var(--cell-bg),
+    inset 0 0 0 5px var(--ink-faint),
+    inset 0 0 0 8px var(--cell-bg),
+    inset 0 0 0 9px var(--ink-soft);
+  padding: 14px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+}
+.clear-art-frame::before, .clear-art-frame::after {
+  content: "";
+  position: absolute;
+  width: 8px; height: 8px;
+  border: 1px solid var(--ink-soft);
+  background: var(--papyrus);
+}
+.clear-art-frame::before { top: 4px; left: 4px; }
+.clear-art-frame::after  { bottom: 4px; right: 4px; }
 #clear-canvas {
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+
+.dust-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.clear-rule {
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--ink-soft);
+  vertical-align: middle;
+  margin: 0 12px;
+}
 .clear-actions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   max-width: 360px;
+  flex-wrap: wrap;
 }
-.clear-actions .btn { flex: 1; }
+.clear-actions .btn { flex: 1; min-width: 100px; }
 
 /* ========================================================================
    モーダル

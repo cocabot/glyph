@@ -1627,26 +1627,56 @@ function checkClear() {
 const clearCanvas = document.getElementById("clear-canvas");
 function showClearScreen() {
   const N = state.size;
-  const m = Math.floor(state.elapsed / 60).toString().padStart(2, "0");
-  const s = (state.elapsed % 60).toString().padStart(2, "0");
-  document.getElementById("clear-time").textContent = `${m}:${s}`;
-  document.getElementById("clear-mistakes").textContent = state.mistakes;
-  document.getElementById("clear-size").textContent = `${N}×${N}`;
+  const totalSec = state.elapsed;
+  const clearTimeEl = document.getElementById("clear-time");
+  const clearMistakesEl = document.getElementById("clear-mistakes");
+  const clearSizeEl = document.getElementById("clear-size");
+  if (clearSizeEl) clearSizeEl.textContent = `${N}×${N}`;
 
+  // 額装キャンバスは初期空、後でプログレッシブ描画
   const cell = 16;
   clearCanvas.width = N * cell;
   clearCanvas.height = N * cell;
   const ctx = clearCanvas.getContext("2d");
-  ctx.fillStyle = "#f1e7cf"; // --cell-bg
+  ctx.fillStyle = "#f1e7cf";
   ctx.fillRect(0, 0, clearCanvas.width, clearCanvas.height);
-  ctx.fillStyle = "#2a1a0e"; // --cell-fill
-  for (let r = 0; r < N; r++) {
-    for (let c = 0; c < N; c++) {
-      if (state.solution[r][c]) ctx.fillRect(c * cell, r * cell, cell, cell);
-    }
-  }
 
   showScreen("clear");
+
+  // 行ごとにフェードインしながら描画（paint-in 演出）
+  const reduce = window.GlyphFx && GlyphFx.isMotionReduced();
+  const drawRow = (r) => {
+    for (let c = 0; c < N; c++) {
+      if (state.solution[r][c]) {
+        ctx.fillStyle = "#2a1a0e";
+        ctx.fillRect(c * cell, r * cell, cell, cell);
+      }
+    }
+  };
+  if (reduce) {
+    for (let r = 0; r < N; r++) drawRow(r);
+  } else {
+    let r = 0;
+    const rowDelay = Math.max(20, Math.floor(600 / N));
+    const interval = setInterval(() => {
+      drawRow(r++);
+      if (r >= N) clearInterval(interval);
+    }, rowDelay);
+  }
+
+  // 統計のカウントアップ
+  if (window.GlyphFx) {
+    GlyphFx.countUpTime(clearTimeEl, totalSec, 700);
+    GlyphFx.countUp(clearMistakesEl, 0, state.mistakes, 400);
+    const dustLayer = document.getElementById("clear-dust");
+    GlyphFx.dust(dustLayer, 14);
+    GlyphFx.vibrate([0, 30, 80, 30, 80, 100]);
+  } else {
+    const m = String(Math.floor(totalSec / 60)).padStart(2, "0");
+    const s = String(totalSec % 60).padStart(2, "0");
+    if (clearTimeEl) clearTimeEl.textContent = `${m}:${s}`;
+    if (clearMistakesEl) clearMistakesEl.textContent = state.mistakes;
+  }
 }
 
 document.getElementById("btn-replay").addEventListener("click", () => {
@@ -1655,6 +1685,22 @@ document.getElementById("btn-replay").addEventListener("click", () => {
 });
 document.getElementById("btn-new").addEventListener("click", () => {
   showScreen("home");
+});
+document.getElementById("btn-save").addEventListener("click", () => {
+  const canvas = document.getElementById("clear-canvas");
+  if (!canvas) return;
+  canvas.toBlob(blob => {
+    if (!blob) { toast("保存に失敗しました"); return; }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `glyph-${state.artworkLabel || "art"}-${state.size}x${state.size}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast("保存しました");
+  }, "image/png");
 });
 
 // ====== ヘルプ ======

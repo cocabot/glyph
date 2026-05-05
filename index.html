@@ -173,20 +173,24 @@
   <!-- クリア -->
   <section id="screen-clear" class="screen">
     <div class="clear-body">
-      <h2>COMPLETE<span class="ja">完成</span></h2>
+      <h2><span class="clear-rule"></span>COMPLETE<span class="ja">完成</span><span class="clear-rule"></span></h2>
       <div class="clear-stats">
         <div><span class="stat-label">時間</span><span id="clear-time">--:--</span></div>
         <div><span class="stat-label">誤</span><span id="clear-mistakes">0</span></div>
         <div><span class="stat-label">寸法</span><span id="clear-size">--</span></div>
       </div>
       <div class="clear-art-wrap">
-        <canvas id="clear-canvas"></canvas>
+        <div class="clear-art-frame">
+          <canvas id="clear-canvas"></canvas>
+        </div>
       </div>
       <div class="clear-actions">
         <button class="btn btn-secondary" id="btn-replay">もう一度</button>
         <button class="btn btn-primary" id="btn-new">別の絵で</button>
+        <button class="btn btn-ghost" id="btn-save"><svg class="btn-icon" aria-hidden="true"><use href="#g-download"/></svg><span>保存</span></button>
       </div>
     </div>
+    <div class="dust-layer" id="clear-dust"></div>
   </section>
 
   <!-- ヘルプ -->
