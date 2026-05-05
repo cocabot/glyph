@@ -1393,6 +1393,7 @@ function attachBoardEvents() {
   let dragAllowsOverwrite = false;
   let dragAxis = null;       // "row" | "col"
   let pressTimer = null;
+  let ringTickId = null;
   let didLongPress = false;
   let lastCell = null;       // 最後に処理したセル
   let lastR = -1, lastC = -1;
@@ -1466,7 +1467,6 @@ function attachBoardEvents() {
     originC = +cell.dataset.c;
     startX = x; startY = y;
     setAim(originR, originC);
-    let ringTickId = null;
     const pressStart = performance.now();
     const PRESS_DURATION = 600;
     if (window.GlyphFx) {
@@ -1474,18 +1474,19 @@ function attachBoardEvents() {
         const elapsed = performance.now() - pressStart;
         const progress = elapsed / PRESS_DURATION;
         if (progress >= 1 || !pressed) {
-          GlyphFx.longPressRing(pressed && pressed.el ? pressed.el : pressed, 0);
+          GlyphFx.longPressRing(pressed, 0);
+          ringTickId = null;
           return;
         }
-        GlyphFx.longPressRing(pressed.el || pressed, progress);
+        GlyphFx.longPressRing(pressed, progress);
         ringTickId = requestAnimationFrame(tick);
       };
       ringTickId = requestAnimationFrame(tick);
     }
     pressTimer = setTimeout(() => {
       didLongPress = true;
-      if (ringTickId) cancelAnimationFrame(ringTickId);
-      if (window.GlyphFx) GlyphFx.longPressRing(pressed.el || pressed, 0);
+      if (ringTickId) { cancelAnimationFrame(ringTickId); ringTickId = null; }
+      if (window.GlyphFx) GlyphFx.longPressRing(pressed, 0);
       startDrag(state.mode, pressed, { allowOverwrite: true });
       if (window.GlyphFx) GlyphFx.vibrate(20);
     }, PRESS_DURATION);
@@ -1500,6 +1501,8 @@ function attachBoardEvents() {
       if (hover) setAim(+hover.dataset.r, +hover.dataset.c);
       if (Math.hypot(dx, dy) < 16) return;
       if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+      if (ringTickId) { cancelAnimationFrame(ringTickId); ringTickId = null; }
+      if (window.GlyphFx && pressed) GlyphFx.longPressRing(pressed, 0);
       dragAxis = Math.abs(dx) >= Math.abs(dy) ? "row" : "col";
       startDrag(state.mode, pressed);
     } else if (!dragAxis && Math.hypot(dx, dy) >= 16) {
@@ -1513,8 +1516,9 @@ function attachBoardEvents() {
 
   function onEnd() {
     if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+    if (ringTickId) { cancelAnimationFrame(ringTickId); ringTickId = null; }
     if (window.GlyphFx && pressed) {
-      GlyphFx.longPressRing(pressed.el || pressed, 0);
+      GlyphFx.longPressRing(pressed, 0);
     }
     if (!dragging && pressed && !didLongPress) {
       // 照準セルにコミット（指がずれていれば最後にいたセルへ）
