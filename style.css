@@ -355,6 +355,15 @@ body {
 .icon-btn:active { background: rgba(42, 26, 14, 0.10); }
 .play-actions .icon-btn { width: 36px; height: 40px; font-size: 1.05rem; }
 .play-actions { display: flex; gap: 2px; }
+.icon-svg {
+  width: 22px;
+  height: 22px;
+  color: currentColor;
+  display: block;
+  margin: auto;
+}
+.play-actions .icon-svg { width: 18px; height: 18px; }
+.mode-btn .icon-svg { width: 18px; height: 18px; margin: 0 auto; }
 
 /* ========================================================================
    トップバー
@@ -527,15 +536,16 @@ input[type="checkbox"]:checked::before { transform: translateX(20px); background
   background: transparent;
   border: none;
   color: var(--ink-soft);
-  padding: 7px 10px;
-  font-size: 0.78rem;
-  font-family: var(--mincho);
-  letter-spacing: 0.08em;
+  padding: 7px 12px;
+  min-width: 44px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 0;
   cursor: pointer;
-  font-weight: 500;
-  white-space: nowrap;
   border-right: 1px solid var(--ink-faint);
+  transition: background var(--motion-fast), color var(--motion-fast);
 }
 .mode-btn:last-child { border-right: none; }
 .mode-btn.active {

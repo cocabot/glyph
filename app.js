@@ -29,6 +29,7 @@ const state = {
   cellSize: 32,
   cellZoom: null,
   cellZoomManual: false,
+  artworkLabel: "下絵",
   cellFit: 32,
 };
 
@@ -76,6 +77,7 @@ function loadImageFromFile(file) {
     const img = new Image();
     img.onload = () => {
       state.sourceImage = img;
+      state.artworkLabel = "下絵";
       showScreen("edit");
       requestAnimationFrame(updatePreview);
     };
@@ -570,6 +572,7 @@ async function generateFromKeyword(rawKeyword) {
 
     const chosen = result.passing;
     state.sourceImage = chosen.image;
+    state.artworkLabel = rawKeyword;
     state.cropCenterX = 0.5;
     state.cropCenterY = 0.5;
     state.cropZoom = 1.0;
@@ -666,6 +669,7 @@ document.getElementById("btn-sample").addEventListener("click", () => {
   const img = new Image();
   img.onload = () => {
     state.sourceImage = img;
+    state.artworkLabel = "サンプル";
     showScreen("edit");
     requestAnimationFrame(updatePreview);
   };
@@ -1091,6 +1095,8 @@ function startNewGame() {
   state.history = [];
   state.mistakes = 0;
   state.cleared = false;
+  const playTitle = document.getElementById("play-title");
+  if (playTitle) playTitle.textContent = `${state.artworkLabel} · ${state.size}×${state.size}`;
   state.startTime = Date.now();
   state.elapsed = 0;
   state.cellZoomManual = false;
@@ -1098,7 +1104,6 @@ function startNewGame() {
   if (state.timerId) clearInterval(state.timerId);
   state.timerId = setInterval(updateTimer, 250);
   mistakesEl.textContent = "ミス: 0";
-  playTitle.textContent = `${N}×${N}`;
   buildBoardDOM();
   updateHintCompletion();
 }

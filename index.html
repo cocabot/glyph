@@ -68,7 +68,7 @@
   <!-- 編集 -->
   <section id="screen-edit" class="screen">
     <header class="topbar">
-      <button class="icon-btn" data-back="home">←</button>
+      <button class="icon-btn" data-back="home"><svg class="icon-svg" aria-hidden="true"><use href="#g-arrow-left"/></svg></button>
       <h2>下絵</h2>
       <span></span>
     </header>
@@ -132,22 +132,22 @@
   <!-- プレイ -->
   <section id="screen-play" class="screen">
     <header class="topbar">
-      <button class="icon-btn" data-back="edit">←</button>
+      <button class="icon-btn" data-back="edit"><svg class="icon-svg" aria-hidden="true"><use href="#g-arrow-left"/></svg></button>
       <h2 id="play-title">プレイ</h2>
-      <button class="icon-btn" id="btn-help">?</button>
+      <button class="icon-btn" id="btn-help"><svg class="icon-svg" aria-hidden="true"><use href="#g-question"/></svg></button>
     </header>
     <div class="play-body">
       <div class="play-toolbar">
         <div class="mode-switch">
-          <button class="mode-btn active" data-mode="fill">塗</button>
-          <button class="mode-btn" data-mode="cross">印</button>
-          <button class="mode-btn" data-mode="erase">消</button>
+          <button class="mode-btn active" data-mode="fill" aria-label="塗る"><svg class="icon-svg" aria-hidden="true"><use href="#g-square-fill"/></svg></button>
+          <button class="mode-btn" data-mode="cross" aria-label="印を付ける"><svg class="icon-svg" aria-hidden="true"><use href="#g-cross"/></svg></button>
+          <button class="mode-btn" data-mode="erase" aria-label="消す"><svg class="icon-svg" aria-hidden="true"><use href="#g-square-empty"/></svg></button>
         </div>
         <div class="play-actions">
-          <button class="icon-btn" id="btn-zoom-out" title="縮小">−</button>
-          <button class="icon-btn" id="btn-zoom-in" title="拡大">+</button>
-          <button class="icon-btn" id="btn-undo" title="戻る">↶</button>
-          <button class="icon-btn" id="btn-restart" title="やり直す">⟳</button>
+          <button class="icon-btn" id="btn-zoom-out" aria-label="縮小"><svg class="icon-svg" aria-hidden="true"><use href="#g-minus"/></svg></button>
+          <button class="icon-btn" id="btn-zoom-in" aria-label="拡大"><svg class="icon-svg" aria-hidden="true"><use href="#g-plus"/></svg></button>
+          <button class="icon-btn" id="btn-undo" aria-label="戻る"><svg class="icon-svg" aria-hidden="true"><use href="#g-undo"/></svg></button>
+          <button class="icon-btn" id="btn-restart" aria-label="やり直す"><svg class="icon-svg" aria-hidden="true"><use href="#g-restart"/></svg></button>
         </div>
       </div>
       <div class="board-wrap">
