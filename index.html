@@ -153,9 +153,19 @@
       <div class="board-wrap">
         <div id="board"></div>
       </div>
-      <div class="status-bar">
-        <span id="timer">00:00</span>
-        <span id="mistakes">誤 0</span>
+      <div class="progress-ribbon">
+        <div class="rib-cell rib-time">
+          <svg class="rib-icon" aria-hidden="true"><use href="#g-hourglass"/></svg>
+          <span id="timer">00:00</span>
+        </div>
+        <div class="rib-cell rib-progress">
+          <span id="hint-progress">0 / 0</span>
+          <small>帯</small>
+        </div>
+        <div class="rib-cell rib-mistakes">
+          <svg class="rib-icon" aria-hidden="true"><use href="#g-cross"/></svg>
+          <span id="mistakes">0</span>
+        </div>
       </div>
     </div>
   </section>

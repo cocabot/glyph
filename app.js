@@ -1103,7 +1103,9 @@ function startNewGame() {
   state.cellZoom = null;
   if (state.timerId) clearInterval(state.timerId);
   state.timerId = setInterval(updateTimer, 250);
-  mistakesEl.textContent = "誤 0";
+  mistakesEl.textContent = "0";
+  const hpEl = document.getElementById("hint-progress");
+  if (hpEl) hpEl.textContent = `0 / ${state.size * 2}`;
   buildBoardDOM();
   updateHintCompletion();
 }
@@ -1114,6 +1116,14 @@ function updateTimer() {
   const m = Math.floor(state.elapsed / 60).toString().padStart(2, "0");
   const s = (state.elapsed % 60).toString().padStart(2, "0");
   timerEl.textContent = `${m}:${s}`;
+}
+
+function updateHintProgress() {
+  const total = (state.rowHints?.length || 0) + (state.colHints?.length || 0);
+  if (!total) return;
+  const done = document.querySelectorAll(".col-hint.done, .row-hint.done").length;
+  const el = document.getElementById("hint-progress");
+  if (el) el.textContent = `${done} / ${total}`;
 }
 
 function maxRowHints() {
@@ -1356,7 +1366,7 @@ function applyAction(r, c, mode, options = {}) {
   // ミス検知（塗りモードで間違えた場合）
   if (mode === "fill" && next === 1 && state.solution[r][c] === 0) {
     state.mistakes++;
-    mistakesEl.textContent = `誤 ${state.mistakes}`;
+    mistakesEl.textContent = `${state.mistakes}`;
     isMistake = true;
     if (window.GlyphFx) {
       GlyphFx.shake(cellEl);
@@ -1568,7 +1578,14 @@ function updateHintCompletion() {
     const want = state.rowHints[r];
     const ok = got.length === want.length && got.every((v, i) => v === want[i]) && want.join(",") !== "0";
     const el = boardEl.querySelector(`.row-hint[data-row="${r}"]`);
-    if (el) el.classList.toggle("done", ok);
+    if (el) {
+      const wasAlreadyDone = el.classList.contains("done");
+      el.classList.toggle("done", ok);
+      if (ok && !wasAlreadyDone && window.GlyphFx) {
+        GlyphFx.inkLine(el);
+        GlyphFx.vibrate([0, 12, 30, 12]);
+      }
+    }
   }
   // 列
   for (let c = 0; c < N; c++) {
@@ -1578,8 +1595,16 @@ function updateHintCompletion() {
     const want = state.colHints[c];
     const ok = got.length === want.length && got.every((v, i) => v === want[i]) && want.join(",") !== "0";
     const el = boardEl.querySelector(`.col-hint[data-col="${c}"]`);
-    if (el) el.classList.toggle("done", ok);
+    if (el) {
+      const wasAlreadyDone = el.classList.contains("done");
+      el.classList.toggle("done", ok);
+      if (ok && !wasAlreadyDone && window.GlyphFx) {
+        GlyphFx.inkLine(el);
+        GlyphFx.vibrate([0, 12, 30, 12]);
+      }
+    }
   }
+  updateHintProgress();
 }
 
 // ====== クリア判定 ======

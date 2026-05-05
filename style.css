@@ -740,17 +740,38 @@ input[type="checkbox"]:checked::before { transform: translateX(20px); background
   font-size: clamp(7px, calc(var(--cell-size) * 0.62), 11px);
 }
 
-.status-bar {
-  display: flex;
-  justify-content: space-around;
-  padding: 9px 12px;
+.progress-ribbon {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  padding: 9px 14px;
   background: var(--papyrus-2);
   border-top: 1px solid var(--ink-faint);
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
   font-size: 0.95rem;
   color: var(--ink);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+  gap: 10px;
+}
+.rib-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.rib-progress { justify-content: center; }
+.rib-mistakes { justify-content: flex-end; }
+.rib-icon {
+  width: 16px; height: 16px;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+.rib-cell small {
+  font-family: var(--mincho);
+  font-size: .7rem;
+  color: var(--ink-soft);
+  letter-spacing: .2em;
 }
 
 /* ========================================================================
