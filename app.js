@@ -1103,7 +1103,7 @@ function startNewGame() {
   state.cellZoom = null;
   if (state.timerId) clearInterval(state.timerId);
   state.timerId = setInterval(updateTimer, 250);
-  mistakesEl.textContent = "ミス: 0";
+  mistakesEl.textContent = "誤 0";
   buildBoardDOM();
   updateHintCompletion();
 }
@@ -1350,16 +1350,30 @@ function applyAction(r, c, mode, options = {}) {
   }
   if (next === cur) return;
 
+  const cellEl = document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+  let isMistake = false;
+
   // ミス検知（塗りモードで間違えた場合）
   if (mode === "fill" && next === 1 && state.solution[r][c] === 0) {
     state.mistakes++;
-    mistakesEl.textContent = `ミス: ${state.mistakes}`;
+    mistakesEl.textContent = `誤 ${state.mistakes}`;
+    isMistake = true;
+    if (window.GlyphFx) {
+      GlyphFx.shake(cellEl);
+      GlyphFx.vibrate(20);
+    }
     toast("ミス！");
   }
 
   state.history.push({ r, c, prev: cur });
   state.player[r][c] = next;
   paintCell(r, c);
+
+  if (!isMistake && next === 1 && window.GlyphFx) {
+    GlyphFx.bloom(cellEl);
+    GlyphFx.vibrate(8);
+  }
+
   updateHintCompletion();
   checkClear();
 }
@@ -1452,11 +1466,29 @@ function attachBoardEvents() {
     originC = +cell.dataset.c;
     startX = x; startY = y;
     setAim(originR, originC);
+    let ringTickId = null;
+    const pressStart = performance.now();
+    const PRESS_DURATION = 600;
+    if (window.GlyphFx) {
+      const tick = () => {
+        const elapsed = performance.now() - pressStart;
+        const progress = elapsed / PRESS_DURATION;
+        if (progress >= 1 || !pressed) {
+          GlyphFx.longPressRing(pressed && pressed.el ? pressed.el : pressed, 0);
+          return;
+        }
+        GlyphFx.longPressRing(pressed.el || pressed, progress);
+        ringTickId = requestAnimationFrame(tick);
+      };
+      ringTickId = requestAnimationFrame(tick);
+    }
     pressTimer = setTimeout(() => {
       didLongPress = true;
+      if (ringTickId) cancelAnimationFrame(ringTickId);
+      if (window.GlyphFx) GlyphFx.longPressRing(pressed.el || pressed, 0);
       startDrag(state.mode, pressed, { allowOverwrite: true });
-      if (navigator.vibrate) navigator.vibrate(20);
-    }, 600);
+      if (window.GlyphFx) GlyphFx.vibrate(20);
+    }, PRESS_DURATION);
   }
 
   function onMove(x, y) {
@@ -1481,6 +1513,9 @@ function attachBoardEvents() {
 
   function onEnd() {
     if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+    if (window.GlyphFx && pressed) {
+      GlyphFx.longPressRing(pressed.el || pressed, 0);
+    }
     if (!dragging && pressed && !didLongPress) {
       // 照準セルにコミット（指がずれていれば最後にいたセルへ）
       const r = state.aimR >= 0 ? state.aimR : +pressed.dataset.r;
