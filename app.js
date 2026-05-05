@@ -1709,6 +1709,38 @@ document.getElementById("btn-help").addEventListener("click", () => helpModal.cl
 document.getElementById("btn-help-close").addEventListener("click", () => helpModal.classList.remove("active"));
 helpModal.addEventListener("click", e => { if (e.target === helpModal) helpModal.classList.remove("active"); });
 
+// ====== 設定 (haptic / reduce-motion) ======
+const SETTINGS_KEY = "glyph_settings";
+function readSettings() {
+  try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; } catch { return {}; }
+}
+function writeSettings(s) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+}
+function applySettingsToUI() {
+  const s = readSettings();
+  const haptic = s.haptic !== false;
+  const reduce = s.reduceMotion === true;
+  const hapticEl = document.getElementById("set-haptic");
+  const reduceEl = document.getElementById("set-reduce-motion");
+  if (hapticEl) hapticEl.checked = haptic;
+  if (reduceEl) reduceEl.checked = reduce;
+  document.documentElement.classList.toggle("reduce-motion", reduce || matchMedia("(prefers-reduced-motion: reduce)").matches);
+}
+document.getElementById("set-haptic").addEventListener("change", e => {
+  const s = readSettings();
+  s.haptic = e.target.checked;
+  writeSettings(s);
+});
+document.getElementById("set-reduce-motion").addEventListener("change", e => {
+  const s = readSettings();
+  s.reduceMotion = e.target.checked;
+  writeSettings(s);
+  applySettingsToUI();
+  if (window.GlyphFx) GlyphFx.reflectMotionSetting();
+});
+applySettingsToUI();
+
 // ====== リサイズ対応 ======
 window.addEventListener("resize", () => {
   if (screens.play.classList.contains("active") && state.solution) {

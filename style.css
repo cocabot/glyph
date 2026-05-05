@@ -931,6 +931,29 @@ input[type="checkbox"]:checked::before { transform: translateX(20px); background
 }
 .modal-card ul b { color: var(--ink); }
 .modal-card .btn { width: 100%; margin-top: 14px; }
+.settings-section {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-faint);
+}
+.settings-section h4 {
+  font-family: var(--mincho);
+  font-size: .85rem;
+  letter-spacing: .2em;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-family: var(--sans);
+  font-size: .92rem;
+  color: var(--ink);
+  cursor: pointer;
+}
 
 /* ========================================================================
    ローディング
@@ -1096,4 +1119,8 @@ input[type="checkbox"]:checked::before { transform: translateX(20px); background
     animation-duration: 1ms !important;
     transition-duration: 1ms !important;
   }
+}
+html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after {
+  animation-duration: 1ms !important;
+  transition-duration: 1ms !important;
 }
