@@ -107,17 +107,21 @@ body {
 
 .hero {
   text-align: center;
-  padding: 6vh 24px 16px;
+  padding: 5vh 24px 14px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 .hero h1 {
   font-family: var(--serif);
   font-size: 2.4rem;
   font-weight: 600;
-  margin: 0 0 4px;
+  margin: 0;
   letter-spacing: 0.32em;
   color: var(--ink);
-  text-indent: 0.32em; /* letter-spacingの右ズレ補正 */
+  text-indent: 0.32em;
 }
 .hero h1 .ja {
   display: block;
@@ -129,28 +133,21 @@ body {
   color: var(--ink-soft);
   margin-top: 6px;
 }
-
-/* 横方向の彫り込み罫（碑文の境界） */
-.hero::before, .hero::after {
-  content: "";
-  display: block;
-  height: 0;
-  margin: 14px auto 0;
-  width: 200px;
-  border-top: 1px solid var(--ink-soft);
-  border-bottom: 1px solid var(--ink-soft);
-  padding-top: 3px;
-}
-.hero::before { display: none; }
-.hero::after { margin-top: 12px; }
-
 .subtitle {
   font-family: var(--mincho);
   color: var(--ink-soft);
-  margin-top: 14px;
+  margin: 0;
   font-size: 0.92rem;
   letter-spacing: 0.18em;
 }
+.hero-ornament {
+  width: 80px;
+  height: 12px;
+  color: var(--ornament);
+  flex-shrink: 0;
+}
+.hero-ornament-top    { margin-bottom: 4px; }
+.hero-ornament-bottom { margin-top: 4px; }
 
 .home-actions {
   flex: 1;
@@ -240,33 +237,25 @@ body {
 .chip:active { background: var(--ink); color: var(--papyrus); }
 .chip:active .chip-icon { color: var(--papyrus); }
 
-/* 区切り：碑文の境界帯 ─◆─ */
 .divider {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
   color: var(--ink-faint);
   font-size: 0.78rem;
   font-family: var(--mincho);
   letter-spacing: 0.3em;
   margin: 6px 0;
 }
-.divider::before, .divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--ink-faint);
-  position: relative;
+.divider-ornament {
+  width: 60px;
+  height: 12px;
+  color: var(--ornament);
+  flex-shrink: 0;
 }
 .divider span {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.divider span::before, .divider span::after {
-  content: "◆";
-  font-size: 0.6rem;
-  color: var(--ink-faint);
+  flex-shrink: 0;
 }
 
 .home-footer {
@@ -341,6 +330,12 @@ body {
   min-height: 32px;
   font-size: 0.78rem;
   letter-spacing: 0.08em;
+}
+.btn-icon {
+  width: 18px;
+  height: 18px;
+  color: currentColor;
+  flex-shrink: 0;
 }
 .btn-fixed {
   margin: 12px 16px calc(14px + var(--safe-bottom));

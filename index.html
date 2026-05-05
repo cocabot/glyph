@@ -15,8 +15,10 @@
   <!-- ホーム -->
   <section id="screen-home" class="screen active">
     <header class="hero">
+      <svg class="hero-ornament hero-ornament-top" aria-hidden="true"><use href="#g-ornament"/></svg>
       <h1>GLYPH<span class="ja">グリフ</span></h1>
       <p class="subtitle">言葉や写真から、刻む一枚を。</p>
+      <svg class="hero-ornament hero-ornament-bottom" aria-hidden="true"><use href="#g-ornament"/></svg>
     </header>
     <div class="home-actions">
       <div class="keyword-card">
@@ -38,16 +40,25 @@
           <button class="chip" data-kw="花"><svg class="chip-icon" aria-hidden="true"><use href="#g-flower"/></svg><span>花</span></button>
         </div>
       </div>
-      <div class="divider"><span>または</span></div>
+      <div class="divider">
+        <svg class="divider-ornament" aria-hidden="true"><use href="#g-ornament"/></svg>
+        <span>または</span>
+        <svg class="divider-ornament" aria-hidden="true"><use href="#g-ornament"/></svg>
+      </div>
       <label class="btn btn-primary btn-large">
         <input type="file" id="file-input" accept="image/*" hidden>
+        <svg class="btn-icon" aria-hidden="true"><use href="#g-image"/></svg>
         <span>写真を選ぶ</span>
       </label>
       <label class="btn btn-secondary btn-large">
         <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
+        <svg class="btn-icon" aria-hidden="true"><use href="#g-camera"/></svg>
         <span>カメラで撮る</span>
       </label>
-      <button class="btn btn-ghost" id="btn-sample">サンプルで試す</button>
+      <button class="btn btn-ghost" id="btn-sample">
+        <svg class="btn-icon" aria-hidden="true"><use href="#g-dice"/></svg>
+        <span>サンプルで試す</span>
+      </button>
     </div>
     <footer class="home-footer">
       タップで塗る ／ 長押しで×印
