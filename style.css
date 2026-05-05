@@ -973,12 +973,30 @@ input[type="checkbox"]:checked::before { transform: translateX(20px); background
   letter-spacing: 0.18em;
 }
 .loading-overlay.active { display: flex; }
-.spinner {
-  width: 48px; height: 48px;
-  border: 3px solid var(--stone);
-  border-top-color: var(--ochre-deep);
+.spinner, .ring-spinner {
+  position: relative;
+  width: 64px; height: 64px;
+}
+.ring {
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
-  animation: spin 0.9s linear infinite;
+  border: 2px solid transparent;
+  animation: spin linear infinite;
+}
+.ring.r1 { border-top-color: var(--ochre);    animation-duration: 1.4s; }
+.ring.r2 { inset: 8px;  border-top-color: var(--lapis);    animation-duration: 1.0s; animation-direction: reverse; }
+.ring.r3 { inset: 16px; border-top-color: var(--ink-faint); animation-duration: 0.7s; }
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mincho);
+  font-size: 1.4rem;
+  color: var(--ink-soft);
+  opacity: .35;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 

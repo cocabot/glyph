@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#ebdfc4">
 <title>グリフ</title>
-<link rel="stylesheet" href="style.css?v=22">
+<link rel="stylesheet" href="style.css?v=23">
 </head>
 <body>
 <div id="app">
@@ -221,7 +221,12 @@
 
   <!-- ロード中 -->
   <div id="loading-overlay" class="loading-overlay">
-    <div class="spinner"></div>
+    <div class="ring-spinner">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <div class="ring-center">刻</div>
+    </div>
     <div id="loading-text">読み込み中</div>
   </div>
 
@@ -229,10 +234,10 @@
   <div id="toast"></div>
 
 </div>
-<script src="picross-core.js?v=22"></script>
-<script src="picross-dict.js?v=22"></script>
-<script src="glyph-icons.js?v=22"></script>
-<script src="glyph-fx.js?v=22"></script>
-<script src="app.js?v=22"></script>
+<script src="picross-core.js?v=23"></script>
+<script src="picross-dict.js?v=23"></script>
+<script src="glyph-icons.js?v=23"></script>
+<script src="glyph-fx.js?v=23"></script>
+<script src="app.js?v=23"></script>
 </body>
 </html>
